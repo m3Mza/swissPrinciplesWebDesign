@@ -1,0 +1,99 @@
+/* Swiss Design Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Swiss Design Color Palette - Limited colors, high contrast */
+  --primary-brown: #402e32;
+  --primary-white: #FFFFFF;
+  --accent-orange: #F9AB5F;
+  --neutral-gray: #666666;
+  --light-gray: #F5F5F5;
+  
+  /* Typography - Helvetica family */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  font-weight: 400;
+  
+  /* Optimal readability */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--primary-white);
+  color: var(--primary-brown);
+  min-height: 100vh;
+}
+
+/* Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Links - Clean and minimal */
+a {
+  color: var(--primary-brown);
+  text-decoration: none;
+  border-bottom: 2px solid var(--primary-brown);
+  transition: border-color 0.2s ease;
+}
+
+a:hover {
+  border-bottom-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+/* Buttons - Swiss minimalism */
+button {
+  background-color: var(--primary-brown);
+  color: var(--primary-white);
+  border: 2px solid var(--primary-brown);
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+button:hover {
+  background-color: var(--primary-white);
+  color: var(--primary-brown);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid var(--primary-brown);
+  outline-offset: 4px;
+}
