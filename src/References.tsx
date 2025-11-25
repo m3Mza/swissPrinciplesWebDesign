@@ -68,6 +68,7 @@ function References() {
           <ul className="references-list">
             <li><a href="https://medium.com/illumination/the-cluttered-canvas-why-asian-internet-looks-different-from-the-rest-of-the-world-48f715929fe8" target="_blank" rel="noopener noreferrer">Shri (28.8.2024), "Shri (28.8.2024) The Cluttered Canvas: Why Asian internet looks different from the rest of the world." Medium</a></li>
             <li><a href="https://grapheine.com/en/magazine/graphic-designer-muller-brockmann-swiss-style/" target="_blank" rel="noopener noreferrer">Shri (28.8.2024), "Grapheine (12.3.2013), "Josef Muller-Brockman "swiss style"". Grapheine.</a></li>
+            <li><a href="https://www.linkedin.com/pulse/swiss-design-deep-dive-its-history-principles-lasting-lucas-flach-fkple" target="_blank" rel="noopener noreferrer">Lucas Flach (25.3.2024) "Swiss Design: A deep dive into its history, principles and lasting influence". LinkedIn.</a></li>
           </ul>
         </section>
 
@@ -78,7 +79,7 @@ function References() {
             dizajn principa korišćenjem React-a i TypeScript-a, sa fokusom na grid sisteme, tipografiju 
             i minimalizam.
           </p>
-          <a href="https://github.com/yourusername/swiss-design-project" target="_blank" rel="noopener noreferrer" className="github-link">
+          <a href="https://github.com/m3Mza/swissPrinciplesWebDesign?tab=readme-ov-file" target="_blank" rel="noopener noreferrer" className="github-link">
             Pogledajte repozitorijum na GitHub-u →
           </a>
         </section>
@@ -88,7 +89,7 @@ function References() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-info">
-            <p>Mirko Popović</p>
+            <p>EMAIL : mirkomimap@gmail.com</p>
           </div>
           <div className="footer-links">
             <a href="https://github.com/m3Mza" target="_blank" rel="noopener noreferrer">

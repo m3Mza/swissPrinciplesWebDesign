@@ -5,6 +5,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   /* Swiss Design Color Palette - Limited colors, high contrast */
   --primary-brown: #402e32;

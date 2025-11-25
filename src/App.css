@@ -1,11 +1,28 @@
-/* Swiss Design Layout System */
+
+/* POČETAK CSS KODA ZA GENERALNI IZGLED STRANICE, SADRŽI SEGMENTE ZA::
+	- Header
+  - Footer
+	- Navigacioni meni
+	- Hero sekciju
+	- Responzivni dizajn
+  - Reference.tsx stranica
+  - Poster carousel
+*/
+
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* References Page */
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : REFERENCE
+ * -----------------------------------------------------------------------------
+ *
+ *  CSS za References.tsx stranicu.
+ */
+
 .references-container {
   max-width: 900px;
   margin: 0 auto;
@@ -106,7 +123,17 @@
   color: var(--primary-brown);
 }
 
-/* Header - Clean and functional */
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : NAVIGACIONI MENI + HEADER
+ * -----------------------------------------------------------------------------
+ *
+ *  CSS za Navigacioni meni i Header.
+ */
+
+
+ /* Header */
+
 .header {
   position: sticky;
   top: 0;
@@ -138,12 +165,14 @@
   color: var(--accent-orange);
 }
 
-/* Navigation - Swiss precision */
+/* Navigacioni meni */
+
 .nav {
   grid-column: 7 / 13;
   display: flex;
   justify-content: flex-end;
   gap: 3rem;
+  flex-wrap: nowrap;
 }
 
 .nav a {
@@ -152,6 +181,7 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   border-bottom: none;
+  white-space: nowrap;
 }
 
 .nav a:hover {
@@ -216,397 +246,15 @@
   padding-left: 2rem;
 }
 
-/* Hero Section - Asymmetric grid */
-.hero {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
-  padding: 5.2rem 4rem;
-  min-height: 80vh;
-  align-items: center;
-}
 
-.hero-content {
-  grid-column: 1 / 8;
-}
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : POSTER CAROUSEL
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za poster carousel.
+ */
 
-.hero-title {
-  font-size: 5rem;
-  font-weight: 700;
-  line-height: 0.95;
-  margin-bottom: 2rem;
-  letter-spacing: -0.03em;
-}
-
-.hero-subtitle {
-  font-size: 1.25rem;
-  color: var(--neutral-gray);
-  margin-bottom: 3rem;
-  max-width: 500px;
-  line-height: 1.6;
-}
-
-.hero-cta {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.hero-visual {
-  grid-column: 9 / 13;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Visual Element - Swiss grid pattern */
-.swiss-grid {
-  width: 100%;
-  aspect-ratio: 1;
-  background-color: var(--light-gray);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  gap: 1px;
-  border: 2px solid var(--primary-brown);
-}
-
-.grid-item {
-  background-color: var(--primary-white);
-}
-
-.grid-item.accent {
-  background-color: var(--accent-orange);
-}
-
-.grid-item.dark {
-  background-color: var(--primary-brown);
-}
-
-/* Features Section - Modular composition */
-.features {
-  padding: 8rem 4rem;
-  background-color: var(--light-gray);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
-}
-
-.features-header {
-  grid-column: 1 / 13;
-  margin-bottom: 4rem;
-}
-
-.features-title {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.feature-card {
-  grid-column: span 4;
-  background-color: var(--primary-white);
-  padding: 3rem;
-  border: 2px solid var(--primary-brown);
-}
-
-.feature-number {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--accent-orange);
-  margin-bottom: 1rem;
-  line-height: 1;
-}
-
-.feature-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.feature-description {
-  color: var(--neutral-gray);
-  line-height: 1.6;
-}
-
-/* Content Section - Extensive white space */
-.content {
-  padding: 8rem 4rem;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4rem;
-}
-
-.content-grey {
-  background-color: var(--light-gray);
-}
-
-.content-text {
-  grid-column: 1 / 7;
-}
-
-.content-image {
-  grid-column: 7 / 13;
-  background-color: var(--light-gray);
-  border: 2px solid var(--primary-brown);
-  aspect-ratio: 4/3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: var(--neutral-gray);
-  overflow: hidden;
-}
-
-.content-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Reverse layout - image on left */
-.content-reverse {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4rem;
-  align-items: center;
-}
-
-.content-reverse .content-image {
-  grid-column: 1 / 5;
-  order: 1;
-  aspect-ratio: auto;
-  border: 2px solid var(--primary-brown);
-}
-
-.content-reverse .content-image img {
-  object-fit: contain;
-}
-
-.content-reverse .content-text {
-  grid-column: 6 / 13;
-  order: 2;
-}
-
-/* Swiss quote styling */
-.swiss-quote {
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.3;
-  margin: 2rem 0;
-  padding-left: 2rem;
-  border-left: 4px solid var(--accent-orange);
-  font-style: italic;
-  color: var(--primary-brown);
-}
-
-.quote-attribution {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 2rem;
-  color: var(--neutral-gray);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Typography showcase */
-.typography-showcase {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  padding: 2rem;
-  gap: 2rem;
-}
-
-.typing-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 120px;
-}
-
-.typing-text {
-  font-size: 5rem;
-  font-weight: 700;
-  color: var(--primary-brown);
-  letter-spacing: 0.02em;
-}
-
-.typing-cursor {
-  font-size: 5rem;
-  font-weight: 300;
-  color: var(--accent-orange);
-  animation: blink 1s infinite;
-  margin-left: 0.25rem;
-}
-
-@keyframes blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0;
-  }
-}
-
-.font-label {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: var(--neutral-gray);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* Typography comparison */
-.typography-comparison {
-  padding: 4rem 4rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.comparison-item {
-  border: 2px solid var(--primary-brown);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--light-gray);
-}
-
-.comparison-item img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-/* Grid example section */
-.grid-example-section {
-  padding: 8rem 4rem;
-  position: relative;
-}
-
-.grid-lines-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.grid-lines-overlay::before {
-  content: '';
-  position: absolute;
-  top: 8rem;
-  left: 4rem;
-  right: 4rem;
-  bottom: 8rem;
-  background-image: 
-    linear-gradient(90deg, rgba(180, 180, 180, 0.25) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(180, 180, 180, 0.25) 1px, transparent 1px);
-  background-size: calc(100% / 12) 100%, 100% calc(100% / 8);
-  background-position: 0 0, 0 0;
-}
-
-.grid-example-title {
-  text-align: center;
-  font-size: 3rem;
-  margin-bottom: 4rem;
-  color: var(--primary-brown);
-  position: relative;
-  z-index: 2;
-}
-
-.grid-example-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-.grid-example-image {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.grid-example-image img {
-  width: 70%;
-  height: auto;
-  border: 2px solid var(--primary-brown);
-  display: block;
-}
-
-.grid-example-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 2rem;
-}
-
-.grid-example-author {
-  font-size: 1.25rem;
-  color: var(--primary-brown);
-  font-weight: 700;
-  margin: 0;
-}
-
-.grid-example-description {
-  font-size: 1.125rem;
-  color: var(--neutral-gray);
-  line-height: 1.8;
-  margin: 0;
-}
-
-/* Internacionalni stil combined section */
-.internacionalni-section {
-  background-color: var(--primary-white);
-}
-
-/* Centered text section */
-.centered-text-section {
-  padding-top: 3rem;
-  padding-bottom: 8rem;
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.centered-paragraph {
-  font-size: 1.8rem;
-  font-weight: 500;
-  line-height: 1.8;
-  color: var(--primary-brown);
-  margin: 0;
-}
-
-.minimalism-image {
-  max-width: 480px;
-  margin: 3rem auto 0;
-  border: 2px solid var(--primary-brown);
-}
-
-.minimalism-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Poster Carousel - Diagonal scrolling */
 .poster-carousel {
   overflow: hidden;
   padding: 6rem 0;
@@ -655,416 +303,14 @@
   }
 }
 
-/* Culture Section - Swiss asymmetric layout with question */
-.culture-section {
-  padding: 10rem 4rem;
-  background-color: var(--light-gray);
-}
-
-.culture-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.culture-images {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 3rem;
-}
-
-.culture-image-wrapper {
-  position: relative;
-  overflow: hidden;
-  border: 2px solid var(--primary-brown);
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-/* Asymmetric Swiss layout - left image */
-.culture-image-left {
-  grid-column: 1 / 6;
-  aspect-ratio: 3/4;
-  margin-top: 3rem;
-}
-
-/* Asymmetric Swiss layout - right image */
-.culture-image-right {
-  grid-column: 7 / 13;
-  aspect-ratio: 4/3;
-}
-
-.culture-image-wrapper:hover {
-  transform: scale(1.02);
-  z-index: 10;
-}
-
-.culture-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  filter: blur(2px);
-  transition: filter 0.3s ease;
-}
-
-.culture-image-wrapper:hover img {
-  filter: blur(0);
-}
-
-.image-label {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  background-color: var(--accent-orange);
-  color: var(--primary-brown);
-  padding: 0.5rem 1.5rem;
-  font-weight: 500;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
-}
-
-.culture-description {
-  grid-column: 7 / 13;
-  margin-top: -14rem;
-  font-size: 1.25rem;
-  line-height: 1.8;
-  color: var(--primary-brown);
-  text-align: left;
-}
-
-/* Result Section */
-
-.result-container {
-  padding: 12rem 2rem;
-  max-width: 1800px;
-  margin: 0 auto;
-}
-
-
-.result-content {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4rem;
-  align-items: center;
-}
-
-.result-image {
-  grid-column: 1 / 7;
-  border: 2px solid var(--primary-brown);
-}
-
-.result-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.contrast-palette {
-  grid-column: 1 / 7;
-  display: grid;
-  grid-template-columns: repeat(5, 100px);
-  gap: 1rem;
-  padding: 2rem;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
-
-.palette-square {
-  width: 100px;
-  height: 100px;
-  border: 2px solid var(--primary-brown);
-  transition: transform 0.3s ease;
-}
-
-.palette-square:hover {
-  transform: scale(1.05);
-}
-
-.palette-square.brown {
-  background-color: var(--primary-brown);
-}
-
-.palette-square.white {
-  background-color: var(--primary-white);
-}
-
-.palette-square.orange {
-  background-color: var(--accent-orange);
-}
-
-.palette-square.gray {
-  background-color: var(--neutral-gray);
-}
-
-.palette-square.light-gray {
-  background-color: var(--light-gray);
-}
-
-.result-text {
-  grid-column: 8 / 13;
-  font-size: 1.5rem;
-  line-height: 1.8;
-  color: var(--primary-brown);
-}
-
-/* Whitespace Section */
-.whitespace-section {
-  padding: 8rem 10%;
-  background-color: var(--primary-white);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3rem;
-}
-
-.whitespace-title {
-  font-size: 3rem;
-  color: var(--primary-brown);
-  text-align: center;
-  margin: 0;
-}
-
-.whitespace-image {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.whitespace-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.whitespace-text {
-  font-size: 1.25rem;
-  line-height: 1.8;
-  color: var(--neutral-gray);
-  text-align: center;
-  max-width: 800px;
-  margin: 0;
-}
-
-/* Culture Comparison Section - Swiss asymmetric layout */
-.culture-comparison {
-  padding: 8rem 4rem;
-  background-color: var(--light-gray);
-}
-
-.comparison-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.comparison-image {
-  position: relative;
-  border: 2px solid var(--primary-brown);
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-/* Asymmetric positioning - Swiss design principle */
-.comparison-image:first-child {
-  grid-column: 1 / 7;
-  grid-row: 1;
-  aspect-ratio: 3/4;
-  margin-top: 4rem;
-}
-
-.comparison-image:last-child {
-  grid-column: 7 / 13;
-  grid-row: 1;
-  aspect-ratio: 4/3;
-  margin-bottom: 4rem;
-}
-
-.comparison-image:hover {
-  transform: scale(1.02);
-  z-index: 10;
-}
-
-.comparison-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  filter: blur(8px);
-  transition: filter 0.4s ease;
-}
-
-.comparison-image:hover img {
-  filter: blur(0);
-}
-
-.comparison-title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: var(--primary-brown);
-  color: var(--primary-white);
-  padding: 1.5rem;
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  z-index: 5;
-}
-
-/* Asymmetry Section */
-.asymmetry-section {
-  padding: 8rem 4rem;
-  background-color: var(--primary-white);
-  overflow: hidden;
-}
-
-.asymmetry-title {
-  text-align: center;
-  font-size: 3rem;
-  margin-bottom: 6rem;
-  color: var(--primary-brown);
-}
-
-.asymmetry-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
-  max-width: 1600px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.asymmetry-item {
-  position: relative;
-  animation: float 6s ease-in-out infinite;
-}
-
-.asymmetry-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 2px solid var(--primary-brown);
-  display: block;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.asymmetry-item p {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  color: var(--primary-brown);
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Poster positions - highly asymmetric layout with varying heights */
-.poster-1 {
-  grid-column: 2 / 4;
-  grid-row: 1 / 3;
-  animation-delay: 0s;
-}
-
-.text-1 {
-  grid-column: 4 / 6;
-  grid-row: 1;
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-  background-color: var(--light-gray);
-  animation-delay: 0.5s;
-  font-size: 1rem;
-}
-
-.poster-2 {
-  grid-column: 6 / 8;
-  grid-row: 2 / 4;
-  animation-delay: 1s;
-}
-
-.poster-3 {
-  grid-column: 9 / 11;
-  grid-row: 1 / 2;
-  animation-delay: 1.5s;
-}
-
-.text-2 {
-  grid-column: 1 / 3;
-  grid-row: 3;
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-  animation-delay: 2s;
-  font-size: 1rem;
-}
-
-.poster-4 {
-  grid-column: 3 / 5;
-  grid-row: 3 / 5;
-  animation-delay: 2.5s;
-}
-
-.poster-5 {
-  grid-column: 11 / 13;
-  grid-row: 2 / 5;
-  animation-delay: 3s;
-}
-
-.text-3 {
-  grid-column: 8 / 10;
-  grid-row: 4;
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-  background-color: var(--accent-orange);
-  color: var(--primary-white);
-  animation-delay: 3.5s;
-  font-size: 1rem;
-}
-
-.text-3 p {
-  color: var(--primary-white);
-}
-
-.poster-6 {
-  grid-column: 1 / 3;
-  grid-row: 4 / 6;
-  animation-delay: 4s;
-}
-
-.poster-7 {
-  grid-column: 4 / 6;
-  grid-row: 5 / 7;
-  animation-delay: 4.5s;
-}
-
-.poster-8 {
-  grid-column: 6 / 8;
-  grid-row: 4 / 5;
-  animation-delay: 5s;
-}
-
-.poster-9 {
-  grid-column: 9 / 11;
-  grid-row: 5 / 8;
-  animation-delay: 5.5s;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Footer - Consistent alignment */
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : FOOTER
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za footer.
+ */
+ 
 .footer {
   background-color: var(--primary-brown);
   color: var(--primary-white);
@@ -1119,7 +365,14 @@
   border-bottom-color: var(--accent-orange);
 }
 
-/* Responsive Design - Maintain grid integrity */
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : RESPOZIVNI DIZAJN
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za responzivnost.
+ */
+
 @media (max-width: 1024px) {
   .hero {
     grid-template-columns: 1fr;
@@ -1149,6 +402,7 @@
     grid-column: 1 / -1;
   }
 }
+
 
 @media (max-width: 768px) {
   .header-content {
@@ -1266,4 +520,1016 @@
   .grid-example-visual .grid-letter {
     font-size: 1.5rem;
   }
+}
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : HERO
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za hero pocetnu stranicu.
+ */
+
+.hero {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+  padding: 5.2rem 4rem;
+  min-height: 80vh;
+  align-items: center;
+}
+
+.hero-content {
+  grid-column: 1 / 8;
+}
+
+.hero-title {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 0.95;
+  margin-bottom: 2rem;
+  letter-spacing: -0.03em;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--neutral-gray);
+  margin-bottom: 3rem;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.hero-visual {
+  grid-column: 9 / 13;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animirani grid na Hero sekciji */
+.swiss-grid {
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: var(--light-gray);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1px;
+  border: 2px solid var(--primary-brown);
+}
+
+.grid-item {
+  background-color: var(--primary-white);
+}
+
+.grid-item.accent {
+  background-color: var(--accent-orange);
+}
+
+.grid-item.dark {
+  background-color: var(--primary-brown);
+}
+
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : ISTORIJAT
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za istorijat.
+ */
+
+
+/* Internacionalni stil sekcija */
+.internacionalni-section {
+  background-color: var(--primary-white);
+}
+
+/* Centrirani tekst zakljucka */
+
+.centered-text-section {
+  padding-top: 3rem;
+  padding-bottom: 8rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.centered-paragraph {
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.8;
+  color: var(--primary-brown);
+  margin: 0;
+}
+
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : UTICAJ KULTURE NA DIZAJN
+ * -----------------------------------------------------------------------------
+ *
+ *  CSS za deo stranice koji prikazuje uticaj kulture na dizajn.
+ */
+
+.culture-section {
+  padding: 10rem 4rem;
+  background-color: var(--light-gray);
+}
+
+.culture-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.culture-images {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3rem;
+}
+
+.culture-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--primary-brown);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Poredjenje ulica leva slika */
+.culture-image-left {
+  grid-column: 1 / 6;
+  aspect-ratio: 3/4;
+  margin-top: 3rem;
+}
+
+/* Poredjenje ulica desna slika */
+.culture-image-right {
+  grid-column: 7 / 13;
+  aspect-ratio: 4/3;
+}
+
+.culture-image-wrapper:hover {
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+.culture-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: blur(2px);
+  transition: filter 0.3s ease;
+}
+
+.culture-image-wrapper:hover img {
+  filter: blur(0);
+}
+
+.image-label {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background-color: var(--accent-orange);
+  color: var(--primary-brown);
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.culture-description {
+  grid-column: 7 / 13;
+  margin-top: -14rem;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: var(--primary-brown);
+  text-align: left;
+}
+
+/* Slika desno tekst levo */
+
+.result-content.reverse {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.result-content.reverse .result-text {
+  grid-column: 1 / 7;
+}
+
+.result-content.reverse .result-image {
+  grid-column: 7 / 13;
+  border: 2px solid var(--primary-brown);
+}
+
+.result-content.reverse .result-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* Slika levo tekst desno */
+
+.result-container {
+  padding: 12rem 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.result-content {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.result-image {
+  grid-column: 1 / 7;
+  border: 2px solid var(--primary-brown);
+}
+
+.result-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* POČETAK CSS KODA ZA IMPLEMENTACIJU PRINCIPA NAD APLIKACIJOM, DALJI KOD SADRŽI SEGMENTE ZA:
+	- Grid
+	- Tipografija
+	- Asimetrija
+	- Minimalizam
+  - Beli prostor
+  - Kontrast
+*/
+
+
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : PRINCIPI ŠVAJCARSKOG DIZAJNA
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za nabrajanje 6 glavnih principa švajcarskog dizajna.
+ */
+
+.features {
+  padding: 8rem 4rem;
+  background-color: var(--light-gray);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+}
+
+.features-header {
+  grid-column: 1 / 13;
+  margin-bottom: 4rem;
+}
+
+.features-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card {
+  grid-column: span 4;
+  background-color: var(--primary-white);
+  padding: 3rem;
+  border: 2px solid var(--primary-brown);
+}
+
+.feature-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+.feature-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.feature-description {
+  color: var(--neutral-gray);
+  line-height: 1.6;
+}
+
+/* Content Section - Extensive white space */
+/* Content Section */
+.content {
+  padding: 8rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.content-belo {
+  background-color: var(--primary-white);
+}
+
+.content-text {
+  grid-column: 1 / 7;
+}
+
+.content-image {
+  grid-column: 7 / 13;
+  background-color: var(--light-gray);
+  border: 2px solid var(--primary-brown);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--neutral-gray);
+}
+
+.content-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Reverse layout - image on left */
+.content-reverse {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.content-reverse .content-image {
+  grid-column: 1 / 5;
+  order: 1;
+  aspect-ratio: auto;
+  border: 2px solid var(--primary-brown);
+}
+
+.content-reverse .content-image img {
+  object-fit: contain;
+}
+
+.content-reverse .content-text {
+  grid-column: 6 / 13;
+  order: 2;
+}
+
+/* Swiss quote styling */
+.swiss-quote {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 2rem 0;
+  padding-left: 2rem;
+  border-left: 4px solid var(--accent-orange);
+  font-style: italic;
+  color: var(--primary-brown);
+}
+
+.quote-attribution {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  color: var(--neutral-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : TIPOGRAFIJA
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za tipografija segment.
+ */
+
+
+
+/* Animirano kuckanje deo */
+
+.typography-showcase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 0.6rem;
+  gap: 2rem;
+}
+
+.typing-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+.typing-text {
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--primary-brown);
+  letter-spacing: 0.02em;
+}
+
+.typing-cursor {
+  font-size: 5rem;
+  font-weight: 300;
+  color: var(--accent-orange);
+  animation: blink 1s infinite;
+  margin-left: 0.25rem;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.font-label {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--neutral-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Tipografija - Helvetika i sans serif fontovi deo */
+.typography-examples {
+  padding: 5rem 10%;
+  background-color: var(--primary-white);
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.typography-example-row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.typography-example-row.gallery .typography-gallery {
+  grid-column: 1 / 7;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1rem;
+  min-height: 500px;
+}
+
+.typography-example-row.gallery .typography-example-text {
+  grid-column: 8 / 13;
+}
+
+.gallery-image {
+  border: 2px solid var(--primary-brown);
+  overflow: hidden;
+}
+
+.gallery-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-image-1 {
+  grid-column: 1 / 4;
+  grid-row: 1 / 3;
+}
+
+.gallery-image-2 {
+  grid-column: 4 / 7;
+  grid-row: 1 / 2;
+}
+
+.gallery-image-3 {
+  grid-column: 4 / 7;
+  grid-row: 2 / 5;
+}
+
+.typography-example-row .typography-example-image {
+  grid-column: 1 / 7;
+}
+
+.typography-example-row .typography-example-text {
+  grid-column: 8 / 13;
+}
+
+.typography-example-row.reverse .typography-example-text {
+  grid-column: 1 / 6;
+}
+
+.typography-example-row.reverse .typography-example-image {
+  grid-column: 7 / 13;
+}
+
+.typography-example-image {
+  width: 100%;
+  overflow: hidden;
+  border: 2px solid var(--primary-brown);
+}
+
+.typography-example-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.typography-example-text h3 {
+  font-size: 2rem;
+  color: var(--primary-brown);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.typography-example-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--neutral-gray);
+}
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : GRID
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za grid segment.
+ */
+
+.grid-example-section {
+  padding: 8rem 4rem;
+  position: relative;
+}
+
+.grid-lines-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grid-lines-overlay::before {
+  content: '';
+  position: absolute;
+  top: 8rem;
+  left: 4rem;
+  right: 4rem;
+  bottom: 8rem;
+  background-image: 
+    linear-gradient(90deg, rgba(180, 180, 180, 0.25) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(180, 180, 180, 0.25) 1px, transparent 1px);
+  background-size: calc(100% / 12) 100%, 100% calc(100% / 8);
+  background-position: 0 0, 0 0;
+}
+
+.grid-example-title {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 4rem;
+  color: var(--primary-brown);
+  position: relative;
+  z-index: 2;
+}
+
+.grid-example-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.grid-example-image {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-example-image img {
+  width: 70%;
+  height: auto;
+  border: 2px solid var(--primary-brown);
+  display: block;
+}
+
+.grid-example-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.grid-example-author {
+  font-size: 1.25rem;
+  color: var(--primary-brown);
+  font-weight: 700;
+  margin: 0;
+}
+
+.grid-example-description {
+  font-size: 1.125rem;
+  color: var(--neutral-gray);
+  line-height: 1.8;
+  margin: 0;
+}
+
+
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : KONTRAST
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za demonstraciju kontrasta.
+ */
+
+.contrast-demo-section {
+  padding: 8rem 10%;
+  background-color: var(--primary-white);
+}
+
+.contrast-demo-title {
+  font-size: 3rem;
+  color: var(--primary-brown);
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.contrast-demo-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contrast-demo-display {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+
+.contrast-side {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+}
+
+.contrast-side.bad-contrast {
+  background-color: #D4C157;
+  color: #f5f2a6;
+}
+
+.contrast-side.good-contrast {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+.contrast-demo-text {
+  font-size: 6rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.contrast-slider-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--accent-orange);
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.contrast-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.slider-label {
+  font-size: 0.9rem;
+  color: var(--neutral-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: center;
+}
+
+.contrast-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 400px;
+  height: 8px;
+  background: linear-gradient(to right, #D4C157, #000000);
+  outline: none;
+  border-radius: 4px;
+}
+
+.contrast-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: var(--accent-orange);
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid var(--primary-brown);
+  transition: transform 0.2s ease;
+}
+
+.contrast-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.contrast-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: var(--accent-orange);
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid var(--primary-brown);
+  transition: transform 0.2s ease;
+}
+
+.contrast-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+.contrast-description {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--neutral-gray);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.result-text {
+  grid-column: 8 / 13;
+  font-size: 1.5rem;
+  line-height: 1.8;
+  color: var(--primary-brown);
+}
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : BELI PROSTOR
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za demonstraciju belog prostora.
+ */
+.whitespace-section {
+  padding: 8rem 10%;
+  background-color: var(--primary-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.whitespace-title {
+  font-size: 3rem;
+  color: var(--primary-brown);
+  text-align: center;
+  margin: 0;
+}
+
+.whitespace-image {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.whitespace-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.whitespace-text {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: var(--neutral-gray);
+  text-align: center;
+  max-width: 800px;
+  margin: 0;
+}
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : ASIMETRIJA
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za demonstraciju asimetrije.
+ */
+
+
+
+.asymmetry-section {
+  padding: 8rem 4rem;
+  background-color: var(--primary-white);
+  overflow: hidden;
+}
+
+.asymmetry-title {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 6rem;
+  color: var(--primary-brown);
+}
+
+.asymmetry-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.asymmetry-item {
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.asymmetry-item img {
+  transition: border-radius 0.2s ease-out;
+}
+
+.asymmetry-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 2px solid var(--primary-brown);
+  display: block;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.asymmetry-item p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--primary-brown);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Pozicije postera asimetricne za ovu stranicu, tj. nasumicne */
+.poster-1 {
+  grid-column: 2 / 4;
+  grid-row: 1 / 3;
+  animation-delay: 0s;
+}
+
+.text-1 {
+  grid-column: 4 / 6;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--light-gray);
+  animation-delay: 0.5s;
+  font-size: 1rem;
+}
+
+.poster-2 {
+  grid-column: 6 / 8;
+  grid-row: 2 / 4;
+  animation-delay: 1s;
+}
+
+.poster-3 {
+  grid-column: 9 / 11;
+  grid-row: 1 / 2;
+  animation-delay: 1.5s;
+}
+
+.text-2 {
+  grid-column: 1 / 3;
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  animation-delay: 2s;
+  font-size: 1rem;
+}
+
+.poster-4 {
+  grid-column: 3 / 5;
+  grid-row: 3 / 5;
+  animation-delay: 2.5s;
+}
+
+.poster-5 {
+  grid-column: 11 / 13;
+  grid-row: 2 / 5;
+  animation-delay: 3s;
+}
+
+.text-3 {
+  grid-column: 8 / 10;
+  grid-row: 4;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--accent-orange);
+  color: var(--primary-white);
+  animation-delay: 3.5s;
+  font-size: 1rem;
+}
+
+.text-3 p {
+  color: var(--primary-white);
+}
+
+.poster-6 {
+  grid-column: 1 / 3;
+  grid-row: 4 / 6;
+  animation-delay: 4s;
+}
+
+.poster-7 {
+  grid-column: 4 / 6;
+  grid-row: 5 / 7;
+  animation-delay: 4.5s;
+}
+
+.poster-8 {
+  grid-column: 6 / 8;
+  grid-row: 4 / 5;
+  animation-delay: 5s;
+}
+
+.poster-9 {
+  grid-column: 9 / 11;
+  grid-row: 5 / 8;
+  animation-delay: 5.5s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : MINIMALIZAM
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za minimalizam segment.
+ */
+
+.minimalism-image {
+  max-width: 480px;
+  margin: 3rem auto 0;
+  border: 2px solid var(--primary-brown);
+}
+
+.minimalism-image img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
