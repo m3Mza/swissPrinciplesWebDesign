@@ -5,17 +5,24 @@
   box-sizing: border-box;
 }
 
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
+
 :root {
-  /* Swiss Design Color Palette - Limited colors, high contrast */
-  --primary-brown: #402e32;
-  --primary-white: #FFFFFF;
+  /* Swiss Design Color Palette - Simplified and consistent */
+  --primary-brown: #1a0c07;
+  --primary-white: #FAFAFA;
   --accent-orange: #F9AB5F;
-  --neutral-gray: #666666;
-  --light-gray: #F5F5F5;
+  --neutral-gray: #6B6B6B;
+  --light-gray: #F0F0F0;
   
   /* Typography - Helvetica family */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -63,41 +70,160 @@ p {
   margin-bottom: 1rem;
 }
 
-/* Links - Clean and minimal */
-a {
-  color: var(--primary-brown);
-  text-decoration: none;
-  border-bottom: 2px solid var(--primary-brown);
-  transition: border-color 0.2s ease;
+
+/*
+ * -----------------------------------------------------------------------------
+ *  SEKCIJA : RESPOZIVNI DIZAJN
+ * -----------------------------------------------------------------------------
+ *
+  *  CSS za deo stranice koji sluzi za responzivnost.
+ */
+
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-content {
+    grid-column: 1 / -1;
+  }
+  
+  .hero-visual {
+    grid-column: 1 / -1;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .feature-card {
+    grid-column: span 6;
+  }
+  
+  .content-text,
+  .content-image {
+    grid-column: 1 / -1;
+  }
+  
+  .content-reverse .content-image,
+  .content-reverse .content-text {
+    grid-column: 1 / -1;
+  }
 }
 
-a:hover {
-  border-bottom-color: var(--accent-orange);
-  color: var(--accent-orange);
-}
 
-/* Buttons - Swiss minimalism */
-button {
-  background-color: var(--primary-brown);
-  color: var(--primary-white);
-  border: 2px solid var(--primary-brown);
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+@media (max-width: 768px) {
+  .header-content {
+    padding: 1.5rem 2rem;
+    gap: 1rem;
+  }
+  
+  .nav {
+    grid-column: 5 / 13;
+    gap: 1.5rem;
+  }
+  
+  .hero {
+    padding: 4rem 2rem;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+  }
+  
+  .features,
+  .content {
+    padding: 4rem 2rem;
+  }
+  
+  .feature-card {
+    grid-column: 1 / -1;
+  }
+  
+  .footer-section {
+    grid-column: span 6;
+  }
+  
+  .culture-section {
+    padding: 6rem 2rem;
+  }
+  
+  .result-section {
+    padding: 6rem 2rem;
+  }
+  
+  .result-title {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .result-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .result-image,
+  .result-text {
+    grid-column: 1 / -1;
+  }
+  
+  .result-text {
+    font-size: 1.125rem;
+  }
+  
+  .culture-question {
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+  }
+  
+  .culture-images {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .culture-image-left,
+  .culture-image-right {
+    grid-column: 1 / -1;
+    margin: 0;
+    aspect-ratio: 4/3;
+  }
+  
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .comparison-image:first-child,
+  .comparison-image:last-child {
+    grid-column: 1 / -1;
+    margin: 0;
+    aspect-ratio: 4/3;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
-button:hover {
-  background-color: var(--primary-white);
-  color: var(--primary-brown);
-}
+  .grid-example-section {
+    padding: 6rem 2rem;
+  }
 
-button:focus,
-button:focus-visible {
-  outline: 2px solid var(--primary-brown);
-  outline-offset: 4px;
+  .grid-example-layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .grid-example-visual .swiss-grid {
+    max-width: 350px;
+  }
+
+  .grid-example-visual .grid-letter {
+    font-size: 1.5rem;
+  }
 }

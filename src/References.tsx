@@ -1,33 +1,35 @@
 import './App.css'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 
 function References() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
     <div className="App">
       <header className="header">
         <div className="header-content">
-          <div className="logo">
-            <Link to="/">ŠVAJCARSKI STIL</Link>
-          </div>
-          <nav className="nav">
-            <Link to="/">Početak</Link>
-            <a href="/#kultura">Kultura</a>
-            <a href="/#internacionalni-stil">Istorijat</a>
-            <div className="nav-dropdown">
-              <a href="/#primena" className="nav-dropdown-toggle">Primena u veb dizajnu ▾</a>
-              <div className="nav-dropdown-menu">
-                <a href="/#grid">Grid sistem</a>
-                <a href="/#tipografija">Tipografija</a>
-                <a href="/#prazan-prostor">Prazan prostor</a>
-                <a href="/#kontrast">Kontrast</a>
-                <a href="/#asimetrija">Asimetrija</a>
-                <a href="/#minimalizam">Minimalizam</a>
-              </div>
-            </div>
-            <Link to="/references">Reference</Link>
-          </nav>
+          <button 
+            className="menu-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? 'MENI' : 'MENI'}
+          </button>
         </div>
       </header>
+
+      {/* Spotlight Menu Overlay */}
+      <div className={`spotlight-menu ${menuOpen ? 'active' : ''}`}>
+        <div className="spotlight-background"></div>
+        <nav className="spotlight-nav">
+          <Link to="/" onClick={() => setMenuOpen(false)}>Početak</Link>
+          <a href="/#kultura" onClick={() => setMenuOpen(false)}>Kultura</a>
+          <a href="/#internacionalni-stil" onClick={() => setMenuOpen(false)}>Istorijat</a>
+          <a href="/#primena" onClick={() => setMenuOpen(false)}>Principi</a>
+          <Link to="/references" onClick={() => setMenuOpen(false)}>Reference</Link>
+        </nav>
+      </div>
 
       <div className="references-container">
         <div className="references-intro">
@@ -84,24 +86,6 @@ function References() {
           </a>
         </section>
       </div>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-info">
-            <p>EMAIL : mirkomimap@gmail.com</p>
-          </div>
-          <div className="footer-links">
-            <a href="https://github.com/m3Mza" target="_blank" rel="noopener noreferrer">
-              GitHub.
-            </a>
-            <Link to="/references">
-              Reference.
-            </Link>
-          </div>
-        </div>
-      </footer>
-
     </div>
   )
 }

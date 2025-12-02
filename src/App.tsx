@@ -1,53 +1,120 @@
 import './App.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 
 {/* Kontrast deo */}
 
 function ContrastDemo() {
+  // TWEAKABLE: Background slide position (0 = fully right/hidden, 1 = fully covering)
+  const [backgroundSlide, setBackgroundSlide] = useState(0)
+  
+  const sectionRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const section = sectionRef.current
+      if (!section) return
+
+      const rect = section.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      // TWEAKABLE: Calculate slide based on scroll position through section
+      // Effect starts when section enters viewport and continues as you scroll through it
+      if (rect.top <= windowHeight && rect.bottom >= 0) {
+        // Calculate progress: 0 when section just entering, 1 when fully scrolled through
+        const sectionHeight = rect.height
+        const visibleTop = Math.max(0, windowHeight - rect.top)
+        const progress = Math.min(1, Math.max(0, visibleTop / (sectionHeight * 0.8)))
+        
+        setBackgroundSlide(progress)
+      } else if (rect.bottom < 0) {
+        // Section has scrolled past - keep at full
+        setBackgroundSlide(1)
+      } else {
+        // Section hasn't reached yet - keep at 0
+        setBackgroundSlide(0)
+      }
+    }
+
+    // Initial check
+    handleScroll()
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  return (
+    <div 
+      id="kontrast" 
+      className="contrast-demo-section"
+      ref={sectionRef}
+    >
+      {/* TWEAKABLE: Black background slides from right based on scroll */}
+      <div 
+        className="contrast-sliding-background"
+        style={{ 
+          transform: `translateX(${100 - (backgroundSlide * 100)}%)`,
+        }}
+      />
+      <div className="contrast-content">
+        <h2 className="contrast-demo-title">3.4. Kontrast i paleta boja</h2>
+        <p className="contrast-text">
+          Kontrast crne i bele boje stvara maksimalni vizuelni uticaj. 
+          Švajcarski dizajn koristi ograničene palete boja sa jakim kontrastom 
+          kako bi obezbedio jasnu vizuelnu komunikaciju. Ovaj princip omogućava 
+          da se ključne informacije istaknu bez nepotrebnih distrakcija. 
+          Visok kontrast između teksta i pozadine direktno utiče na čitljivost 
+          i pristupačnost, čineći sadržaj razumljivim za širi spektar korisnika.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+{/* Cultural comparison slider */}
+
+function CultureComparison() {
   const [sliderPosition, setSliderPosition] = useState(50)
 
   return (
-    <div id="kontrast" className="contrast-demo-section">
-      <h2 className="contrast-demo-title">3.4. Kontrast i paleta boja</h2>
-      <div className="contrast-demo-container">
-        <div className="contrast-demo-display">
-          {/* Bad contrast side */}
+    <div className="culture-comparison-section">
+      <div className="culture-comparison-container">
+        <div className="culture-comparison-display">
           <div 
-            className="contrast-side bad-contrast"
+            className="comparison-side"
             style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
           >
-            <p className="contrast-demo-text">Pozdrav</p>
+            <img src="/japanStranica.jpg" alt="Japanski veb dizajn" />
           </div>
-          {/* Good contrast side */}
           <div 
-            className="contrast-side good-contrast"
+            className="comparison-side"
             style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}
           >
-            <p className="contrast-demo-text">Pozdrav</p>
+            <img src="/google.png" alt="Google stranica" />
           </div>
-          {/* Slider line */}
           <div 
-            className="contrast-slider-line"
+            className="comparison-slider-line"
             style={{ left: `${sliderPosition}%` }}
           />
         </div>
-        <div className="contrast-slider-container">
-          <span className="slider-label">Dobar kontrast</span>
+        <div className="comparison-slider-container">
+          <span className="slider-label">Srbija</span>
           <input
             type="range"
             min="0"
             max="100"
             value={sliderPosition}
             onChange={(e) => setSliderPosition(Number(e.target.value))}
-            className="contrast-slider"
+            className="comparison-slider"
           />
-          <span className="slider-label">Loš kontrast</span>
+          <span className="slider-label">Japan</span>
         </div>
       </div>
-      <p className="contrast-description">
-        Kontrast crne i bele boje stvara maksimalni vizuelni uticaj. Pomerajte klizač da vidite kako kontrast utiče na čitljivost teksta.
+      <p className="comparison-description">
+        Drastična razlika u dizajnu veb stranica između istočne i zapadne kulture.
       </p>
     </div>
   )
@@ -56,182 +123,45 @@ function ContrastDemo() {
 {/* Asimetrija deo hover animacije */}
 
 function AsymmetrySection() {
-  const [cardStates, setCardStates] = useState<{
-    [key: string]: {
-      offsetX: number;
-      offsetY: number;
-      cursorAngle: number;
-      cursorDistance: number;
-    }
-  }>({})
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, cardId: string) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const cardCenterX = rect.left + rect.width / 2
-    const cardCenterY = rect.top + rect.height / 2
-    const mouseX = e.clientX
-    const mouseY = e.clientY
-
-    const deltaX = mouseX - cardCenterX
-    const deltaY = mouseY - cardCenterY
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
-    
-    const maxDistance = 70
-    const maxMove = 30
-
-    if (distance < maxDistance) {
-      const angle = Math.atan2(deltaY, deltaX)
-      const force = 1 - (distance / maxDistance)
-      
-      const offsetX = -Math.cos(angle) * maxMove * force
-      const offsetY = -Math.sin(angle) * maxMove * force
-
-      setCardStates(prev => ({
-        ...prev,
-        [cardId]: {
-          offsetX,
-          offsetY,
-          cursorAngle: angle,
-          cursorDistance: distance
-        }
-      }))
-    }
-  }
-
-  const handleMouseLeave = (cardId: string) => {
-    setCardStates(prev => ({
-      ...prev,
-      [cardId]: {
-        offsetX: 0,
-        offsetY: 0,
-        cursorAngle: 0,
-        cursorDistance: 999
-      }
-    }))
-  }
-
-  const getTransform = (cardId: string) => {
-    const state = cardStates[cardId]
-    if (!state || (state.offsetX === 0 && state.offsetY === 0)) {
-      return 'translate(0px, 0px)'
-    }
-    return `translate(${state.offsetX}px, ${state.offsetY}px)`
-  }
-
-  const getImageFilter = (cardId: string) => {
-    const state = cardStates[cardId]
-    if (!state || state.cursorDistance > 200) {
-      return {}
-    }
-
-    const angle = state.cursorAngle
-    const bendStrength = (1 - state.cursorDistance / 200) * 30
-    
-    // Logika za ugao kursora
-    const isFromRight = Math.cos(angle) > 0.2
-    const isFromLeft = Math.cos(angle) < -0.2
-    const isFromTop = Math.sin(angle) < -0.2
-    const isFromBottom = Math.sin(angle) > 0.2
-
-    let borderRadius = '0px'
-    
-    if (isFromLeft) {
-      borderRadius = `${bendStrength}% 0% 0% ${bendStrength}% / 50% 50% 50% 50%`
-    } else if (isFromRight) {
-      borderRadius = `0% ${bendStrength}% ${bendStrength}% 0% / 50% 50% 50% 50%`
-    } else if (isFromTop) {
-      borderRadius = `${bendStrength}% ${bendStrength}% 0% 0% / 50% 50% 50% 50%`
-    } else if (isFromBottom) {
-      borderRadius = `0% 0% ${bendStrength}% ${bendStrength}% / 50% 50% 50% 50%`
-    }
-
-    return { borderRadius }
-  }
-
   return (
     <div id="asimetrija" className="asymmetry-section">
       <h2 className="asymmetry-title">3.5. Asimetrična kompozicija</h2>
       <div className="asymmetry-grid">
-        <div 
-          className="asymmetry-item poster-1"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-1')}
-          onMouseLeave={() => handleMouseLeave('poster-1')}
-          style={{ transform: getTransform('poster-1') }}
-        >
-          <img src="/poster1.jpg" alt="Swiss poster 1" style={getImageFilter('poster-1')} />
+        <div className="asymmetry-item poster-1">
+          <img src="/poster1.jpg" alt="Swiss poster 1" />
         </div>
         <div className="asymmetry-item text-1">
           <p>Dinamična ravnoteža kreira se "nasumičnim" ređanjem elemenata</p>
         </div>
-        <div 
-          className="asymmetry-item poster-2"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-2')}
-          onMouseLeave={() => handleMouseLeave('poster-2')}
-          style={{ transform: getTransform('poster-2') }}
-        >
-          <img src="/poster2.png" alt="Swiss poster 2" style={getImageFilter('poster-2')} />
+        <div className="asymmetry-item poster-2">
+          <img src="/poster2.png" alt="Swiss poster 2" />
         </div>
-        <div 
-          className="asymmetry-item poster-3"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-3')}
-          onMouseLeave={() => handleMouseLeave('poster-3')}
-          style={{ transform: getTransform('poster-3') }}
-        >
-          <img src="/poster3.png" alt="Swiss poster 3" style={getImageFilter('poster-3')} />
+        <div className="asymmetry-item poster-3">
+          <img src="/poster3.png" alt="Swiss poster 3" />
         </div>
         <div className="asymmetry-item text-2">
           <p>Vizuelna tenzija se izaziva različitim veličinama objekata</p>
         </div>
-        <div 
-          className="asymmetry-item poster-4"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-4')}
-          onMouseLeave={() => handleMouseLeave('poster-4')}
-          style={{ transform: getTransform('poster-4') }}
-        >
-          <img src="/poster4.jpg" alt="Swiss poster 4" style={getImageFilter('poster-4')} />
+        <div className="asymmetry-item poster-4">
+          <img src="/poster4.jpg" alt="Swiss poster 4" />
         </div>
-        <div 
-          className="asymmetry-item poster-5"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-5')}
-          onMouseLeave={() => handleMouseLeave('poster-5')}
-          style={{ transform: getTransform('poster-5') }}
-        >
-          <img src="/poster5.jpg" alt="Swiss poster 5" style={getImageFilter('poster-5')} />
+        <div className="asymmetry-item poster-5">
+          <img src="/poster5.jpg" alt="Swiss poster 5" />
         </div>
         <div className="asymmetry-item text-3">
           <p>Asimetrija više "prija" ljudskom oku, prirodnija je, i vodi pažnju posmatrača</p>
         </div>
-        <div 
-          className="asymmetry-item poster-6"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-6')}
-          onMouseLeave={() => handleMouseLeave('poster-6')}
-          style={{ transform: getTransform('poster-6') }}
-        >
-          <img src="/poster6.jpg" alt="Swiss poster 6" style={getImageFilter('poster-6')} />
+        <div className="asymmetry-item poster-6">
+          <img src="/poster6.jpg" alt="Swiss poster 6" />
         </div>
-        <div 
-          className="asymmetry-item poster-7"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-7')}
-          onMouseLeave={() => handleMouseLeave('poster-7')}
-          style={{ transform: getTransform('poster-7') }}
-        >
-          <img src="/poster7.jpg" alt="Swiss poster 7" style={getImageFilter('poster-7')} />
+        <div className="asymmetry-item poster-7">
+          <img src="/poster7.jpg" alt="Swiss poster 7" />
         </div>
-        <div 
-          className="asymmetry-item poster-8"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-8')}
-          onMouseLeave={() => handleMouseLeave('poster-8')}
-          style={{ transform: getTransform('poster-8') }}
-        >
-          <img src="/poster8.jpg" alt="Swiss poster 8" style={getImageFilter('poster-8')} />
+        <div className="asymmetry-item poster-8">
+          <img src="/poster8.jpg" alt="Swiss poster 8" />
         </div>
-        <div 
-          className="asymmetry-item poster-9"
-          onMouseMove={(e) => handleMouseMove(e, 'poster-9')}
-          onMouseLeave={() => handleMouseLeave('poster-9')}
-          style={{ transform: getTransform('poster-9') }}
-        >
-          <img src="/dasNeueHeim.jpg" alt="Das Neue Heim" style={getImageFilter('poster-9')} />
+        <div className="asymmetry-item poster-9">
+          <img src="/dasNeueHeim.jpg" alt="Das Neue Heim" />
         </div>
       </div>
     </div>
@@ -241,6 +171,7 @@ function AsymmetrySection() {
 {/* Grid animacija - Random kockice pocetna */}
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false)
   const [gridPattern, setGridPattern] = useState([
     false, true, false, false,
     false, false, true, false,
@@ -317,6 +248,8 @@ function App() {
 
 
 
+
+
 {/* HTML */}
 
   return (
@@ -324,31 +257,27 @@ function App() {
       {/* Header */}
       <header className="header">
         <div className="header-content">
-          <div className="logo">
-            <a href="#pocetna">INTERNACIONALNI STIL</a>
-          </div>
-          <nav className="nav">
-            <a href="#pocetna">Početak</a>
-            <a href="#kultura">Kultura</a>
-            <a href="#internacionalni-stil">Istorijat</a>
-            <a href="#primena">Principi</a>
-            <div className="nav-dropdown">
-              <a href="#primena" className="nav-dropdown-toggle">
-                Primena u veb dizajnu ▾
-              </a>
-              <div className="nav-dropdown-menu">
-                <a href="#grid">Grid sistem</a>
-                <a href="#tipografija">Tipografija</a>
-                <a href="#prazan-prostor">Prazan prostor</a>
-                <a href="#kontrast">Kontrast</a>
-                <a href="#asimetrija">Asimetrija</a>
-                <a href="#minimalizam">Minimalizam</a>
-              </div>
-            </div>
-            <Link to="/references">Reference</Link>
-          </nav>
+          <button 
+            className="menu-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? 'MENI' : 'MENI'}
+          </button>
         </div>
       </header>
+
+      {/* Spotlight Menu Overlay */}
+      <div className={`spotlight-menu ${menuOpen ? 'active' : ''}`}>
+        <div className="spotlight-background"></div>
+        <nav className="spotlight-nav">
+          <a href="#pocetna" onClick={() => setMenuOpen(false)}>Početak</a>
+          <a href="#kultura" onClick={() => setMenuOpen(false)}>Kultura</a>
+          <a href="#internacionalni-stil" onClick={() => setMenuOpen(false)}>Istorijat</a>
+          <a href="#primena" onClick={() => setMenuOpen(false)}>Principi</a>
+          <Link to="/references" onClick={() => setMenuOpen(false)}>Reference</Link>
+        </nav>
+      </div>
 
       {/* Hero Sekcija - Početna stranica */}
       <section className="hero">
@@ -362,10 +291,6 @@ function App() {
           </h1>
           <p className="hero-subtitle">Mirko Popović SI 21/21</p>
           <div className="hero-cta">
-            <a href="#kultura">
-              <button>Započnite</button>
-            </a>
-            <Link to="/references">Reference</Link>
           </div>
         </div>
         <div className="hero-visual">
@@ -384,48 +309,27 @@ function App() {
 
       {/* Uticaj kulture sekcija */}
       <section className="culture-section" id="kultura">
-        <div className="culture-container">
-          <h2 className="content-text">
-            1. Kako kultura i društvo
-            <br />
-            mogu uticati na
-            <br />
-            veb dizajn?
+        <div className="culture-question-container">
+          <h2 className="culture-question">
+            1. Kako kultura i društvo mogu da utiču na veb dizajn?
           </h2>
-          <div className="culture-images">
-            <div className="culture-image-wrapper culture-image-left">
-              <img src="/japanUlica.jpg" alt="Tokio ulica" />
-              <span className="image-label">Tokio</span>
+        </div>
+
+        <div className="culture-kabukicho-section">
+          <div className="culture-kabukicho-container">
+            <div className="culture-kabukicho-image">
+              <img src="/japanUlica.jpg" alt="Kabukicho Tokyo" />
             </div>
-            <div className="culture-image-wrapper culture-image-right">
-              <img src="/parizUlica.jpg" alt="Pariz ulica" />
-              <span className="image-label">Pariz</span>
+            <div className="culture-kabukicho-text">
+              <p>
+                Kabukičo distrikt, Tokio, Japan. Ulice istočne Azije su prošarane velikim brojem reklama i natpisa, 
+                ljudi iz ovih predela su samim tim od malena navikli da bolje obrađuju veći broj informacija.
+              </p>
             </div>
-            <p className="culture-description">
-              Veoma dobar primer uticaja kulture na dizajn su ulice Tokija i
-              Pariza, ulice Tokija ali i generalno ulice istočne Azije su
-              prošarane velikim brojem reklama i natpisa, ljudi iz ovih predela
-              su samim tim od malena navikli da bolje obrađuju veći broj
-              informacija. Ove kulturoške razlike se odražavaju čak i na veb
-              dizajnu.
-            </p>
           </div>
         </div>
 
-        <div className="result-container">
-          <div className="result-content">
-            <div className="result-image">
-              <img src="/japanStranica.jpg" alt="Goo pretraživač" />
-            </div>
-            <p className="result-text">
-              Drastična razlika se primećuje čak i kod veb pretraživača. Na
-              slici je prikazan "Goo" - veb pretraživač koji Google plasira za
-              japansko tržište. U daljim segmentima ćemo istražiti kako su
-              kulturološki aspekti uticali na razvoj švajcarskog veb dizajna i
-              kako se njegovi principi mogu primeniti.
-            </p>
-          </div>
-        </div>
+        <CultureComparison />
       </section>
 
       {/* Internacionalni stil sekcija */}
@@ -435,13 +339,11 @@ function App() {
             <img src="/dasNeueHeim.jpg" alt="Das Neue Heim magazine" />
           </div>
           <div className="content-text">
-            <h2>2. Društveni uticaj na razvoj Švajcarskog stila</h2>
+            <h2>2. Formiranje ideje švajcarskog stila</h2>
             <blockquote className="swiss-quote">
-              "Uveren sam da će kroz generaciju, dve, arhitektura i svet dizajna
-              biti transformisan sa univerzalnošću stila, stil logične forme i
-              čistoće stila."
+              "Izaći iz voza u Cirihu 1958. izgledalo je kao ulazak u izložbu avant-gardnog dizajna."
             </blockquote>
-            <p className="quote-attribution">— Henri van De Velde, 1929.</p>
+            <p className="quote-attribution">— Ričard Holis, ""Swiss graphic design: The origins and growth of an international style", str. 7, 2006.</p>
             <p>
               "DAS NEUE HEIM", poster za konvenciju u Muzeju primenjenih
               umetnosti u Cirihu 1926. Dizajniran od strane Ernst Kelera, "Oca
@@ -450,21 +352,108 @@ function App() {
           </div>
         </div>
 
-        <div className="culture-container">
-          <h2>Racionalnost nakon rata</h2>
-          <div className="culture-images">
-            <div className="culture-image-wrapper culture-image-left">
-              <img src="/artNoveau.jpg" alt="Art Nouveau" />
-              <span className="image-label">Art Nouveau</span>
-            </div>
-            <div className="culture-image-wrapper culture-image-right">
-              <img src="/deStijl.jpg" alt="De Stijl" />
-              <span className="image-label">De Stijl</span>
-            </div>
-            <p className="culture-description">
-              1920-te su označile prelazak sa ornametisanog "Art Noveau" stila u
-              jedan strukturisan, logičan i racionalan stil.
-            </p>
+        <div className="timeline-section">
+          <div className="timeline-decoration-image timeline-img-1 flip-on-hover">
+            <img src="/artNoveau.jpg" alt="Art Nouveau" className="flip-front" />
+            <img src="/bauhaus.jpg" alt="Bauhaus" className="flip-back" />
+          </div>
+          <div className="timeline-decoration-image timeline-img-2">
+            <img src="/novaTipografija.jpg" alt="Nova Tipografija" />
+          </div>
+          <div className="timeline-decoration-image timeline-img-3">
+            <img src="/maxBill.jpg" alt="Max Bill" />
+          </div>
+          <div className="timeline-decoration-image timeline-img-4">
+            <img src="/helvetica.jpg" alt="Helvetika" />
+          </div>
+          <div className="timeline-decoration-image timeline-img-5">
+            <img src="/brokman.jpg" alt="Josef Müller-Brockmann" />
+          </div>
+
+          <div className="timeline-container">
+            <section className="timeline-item">
+              <div className="timeline-year">1919</div>
+              <article className="timeline-event">
+                <aside className="timeline-marker">
+                  <div className="timeline-dot"></div>
+                  <div className="timeline-line"></div>
+                </aside>
+                <main className="timeline-content">
+                  <h3>Logika i racionalnost nakon rata</h3>
+                  <p>Umetnici u potrazi za logikom i racionalnošću nakon Prvog svetskog rata prelaze na geometrijske stilove kao De Stijl ili Bauhaus.</p>
+                </main>
+              </article>
+            </section>
+
+            <section className="timeline-item">
+              <div className="timeline-year">1928</div>
+              <article className="timeline-event">
+                <aside className="timeline-marker">
+                  <div className="timeline-dot"></div>
+                  <div className="timeline-line"></div>
+                </aside>
+                <main className="timeline-content">
+                  <h3>Nova tipografija</h3>
+                  <p>Jan Čihold objavljuje "Die Neue Typographie", manifest moderne tipografije koji naglašava jasnoću i funkcionalnost.</p>
+                </main>
+              </article>
+            </section>
+
+            <section className="timeline-item">
+              <div className="timeline-year">1933</div>
+              <article className="timeline-event">
+                <aside className="timeline-marker">
+                  <div className="timeline-dot"></div>
+                  <div className="timeline-line"></div>
+                </aside>
+                <main className="timeline-content">
+                  <h3>Zatvaranje Bauhausa</h3>
+                  <p>Nacisti zatvaraju Bauhaus, ali njegovi principi se šire svetom kroz emigraciju nastavnika i studenata.</p>
+                </main>
+              </article>
+            </section>
+
+            <section className="timeline-item">
+              <div className="timeline-year">1950-1960</div>
+              <article className="timeline-event">
+                <aside className="timeline-marker">
+                  <div className="timeline-dot"></div>
+                  <div className="timeline-line"></div>
+                </aside>
+                <main className="timeline-content">
+                  <h3>Formiranje Internacionalnog stila</h3>
+                  <p>U Švajcarskoj, dizajneri poput Maks Bila i Jozef Miler-Brokmana formiraju ideju poslovnog i korporativnog stila orijentisanog na funkcionalnost.</p>
+                </main>
+              </article>
+            </section>
+
+            <section className="timeline-item">
+              <div className="timeline-year">1957</div>
+              <article className="timeline-event">
+                <aside className="timeline-marker">
+                  <div className="timeline-dot"></div>
+                  <div className="timeline-line"></div>
+                </aside>
+                <main className="timeline-content">
+                  <h3>Helvetica</h3>
+                  <p>Maks Midinger dizajnira "Helvetica", font koji postaje sinonim za švajcarski dizajn i jedan od najkorišćenijih fontova u istoriji.</p>
+                </main>
+              </article>
+            </section>
+
+            <section className="timeline-item">
+              <div className="timeline-year">1981</div>
+              <article className="timeline-event">
+                <aside className="timeline-marker">
+                  <div className="timeline-dot"></div>
+                  <div className="timeline-line"></div>
+                </aside>
+                <main className="timeline-content">
+                  <h3>Grid sistemi</h3>
+                  <p>Jozef Miler-Brokman objavljuje "Grid Systems in Graphic Design", definišući matematički pristup layout dizajnu.</p>
+                </main>
+              </article>
+            </section>
           </div>
         </div>
 
@@ -523,18 +512,6 @@ function App() {
           </div>
         </div>
 
-        {/* Tekst zaključka o istorijatu */}
-        <div className="centered-text-section">
-          <p className="centered-paragraph">
-            Razvojem industrijalizovanog društva, umetnici su našli mesto u
-            njemu prvenstveno u dizajnu novina i plakata, ornamentacije i ručno
-            crtane slike su polako zamenili beli prostor, fotografije i
-            jednostavan format slova. Turbulentne promene u društvu od velike
-            depresije 1920-ih do pojave radikalnih ideologija, polako su
-            formirale ideju "Internacionalnog stila" 1950-ih godina prošlog
-            veka.
-          </p>
-        </div>
       </section>
 
       {/* Primena Section - Features Grid */}
@@ -544,7 +521,6 @@ function App() {
             <h2 className="features-title">
               3. Principi internacionalnog stila
             </h2>
-            <p>Osnovni gradivni blokovi jasne vizuelne komunikacije</p>
           </div>
 
           <article className="feature-card">
@@ -605,94 +581,97 @@ function App() {
       {/* Grid sistem primer */}
       <div id="grid" className="grid-example-section">
         <div className="grid-lines-overlay"></div>
-        <h2 className="grid-example-title">3.1. Grid sistem u praksi</h2>
-        <div className="grid-example-layout">
-          <div className="grid-example-image">
-            <img src="/gridSistemi.jpg" alt="Grid sistem primer" />
+        <div className="content content-reverse">
+          <div className="content-image">
+            <img src="/gridSistemi.jpg" alt="Grid i raster sistemi" />
           </div>
-          <div className="grid-example-content">
-            <p className="grid-example-author">Josef Müller-Brockmann, 1956.</p>
-            <p className="grid-example-description">
-              Prvi put definisan u Milerovoj knjizi, grid sistem je osmišljen
-              kao logičan i matematički pristup grafičkom dizajnu. Miler je u
-              knjizi dao konkretne smernice i pravila za izradu
-              grid-orijentisanih prikaza.
+          <div className="content-text">
+            <h2>3.1. Grid sistemi</h2>
+            <blockquote className="swiss-quote">
+              "Upotreba grid sistema prikazuje da dizajner posmatra svoj rad kao konstruktivan i orijentisan na budućnost." "
+            </blockquote>
+            <p className="quote-attribution">— Jozef Miler Brokman "Grid sistemi u grafičkom dizajnu" str. 10, 1996.</p>
+            <p>
+              Brokmanova knjiga je formatirala ideju upotrebe grid sistema za strukturalnu jasnoću i konzistenciju pri izradi dizajna.
             </p>
           </div>
         </div>
-      </div>
 
-      {/* Grid carousel (Posteri kopija) */}
-      <div className="poster-carousel">
-        <div className="carousel-track">
-          <div className="carousel-item">
-            <img src="/mueller1.jpg" alt="Swiss poster 1" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller2.png" alt="Swiss poster 2" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller3.png" alt="Swiss poster 3" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller4.png" alt="Swiss poster 4" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller5.png" alt="Swiss poster 5" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller6.png" alt="Swiss poster 6" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller7.png" alt="Swiss poster 7" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller8.png" alt="Swiss poster 8" />
-          </div>
-          {/* Duplikat za loop */}
-          <div className="carousel-item">
-            <img src="/mueller1.png" alt="Swiss poster 1" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller2.png" alt="Swiss poster 2" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller3.png" alt="Swiss poster 3" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller4.png" alt="Swiss poster 4" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller5.png" alt="Swiss poster 5" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller6.png" alt="Swiss poster 6" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller7.png" alt="Swiss poster 7" />
-          </div>
-          <div className="carousel-item">
-            <img src="/mueller8.png" alt="Swiss poster 8" />
+        {/* Grid carousel (Posteri kopija) */}
+        <div className="poster-carousel">
+          <div className="carousel-track">
+            <div className="carousel-item">
+              <img src="/mueller1.jpg" alt="Swiss poster 1" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller2.png" alt="Swiss poster 2" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller3.png" alt="Swiss poster 3" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller4.png" alt="Swiss poster 4" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller5.png" alt="Swiss poster 5" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller6.png" alt="Swiss poster 6" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller7.png" alt="Swiss poster 7" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller8.png" alt="Swiss poster 8" />
+            </div>
+            {/* Duplikat za loop */}
+            <div className="carousel-item">
+              <img src="/mueller1.png" alt="Swiss poster 1" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller2.png" alt="Swiss poster 2" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller3.png" alt="Swiss poster 3" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller4.png" alt="Swiss poster 4" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller5.png" alt="Swiss poster 5" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller6.png" alt="Swiss poster 6" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller7.png" alt="Swiss poster 7" />
+            </div>
+            <div className="carousel-item">
+              <img src="/mueller8.png" alt="Swiss poster 8" />
+            </div>
           </div>
         </div>
-      </div>
 
-    {/* Inspect element */}
-      <div id="prazan-prostor" className="whitespace-section">
-        <h2 className="whitespace-title">
-          Grid linije na konkretnoj stranici
-        </h2>
-        <div className="whitespace-image">
-          <img src="/inspectElement.png" alt="Inspect Element" />
+        <div className="centered-text-section">
+          <p className="centered-paragraph">
+            Grid sistemi se lako mogu implementirati putem CSS Grid i Flexbox tehnologija. Korišćenjem grid sistema dizajn postaje organizovaniji i koherentniji.
+          </p>
         </div>
-        <p className="whitespace-text">
-          Na slici se može videti kako uz pomoć Inspect elementa ugrađenog u pretraživač možemo vizualizovati grid linije.
-        </p>
+
+        {/* Inspect element */}
+        <div className="whitespace-section-inline">
+          <div className="whitespace-image" style={{ border: "2px solid #402e32" }}>
+            <img src="/inspectElement.png" alt="Inspect Element" />
+          </div>
+          <p className="whitespace-text">
+            Na slici se može videti kako uz pomoć Inspect elementa ugrađenog u pretraživač možemo vizualizovati grid linije.
+          </p>
+        </div>
       </div>
       
   
       {/* Tipografija primer */}
-      <div id="tipografija" className="content content-reverse">
+      <div className="content content-reverse">
         <div
           className="content-image"
           style={{ backgroundColor: "transparent", border: "none" }}
@@ -715,10 +694,7 @@ function App() {
           <p className="grid-example-description">
             Sam izbor tipografije i izgleda teksta na sajtu može preneti
             drastično različite poruke, te je potrebno proučiti kontekst u kom
-            će se projekat koristiti.
-          </p>
-          <p className="grid-example-description">
-            Sans-serif fontovi eliminišu nepotrebne dekoracije, fokusirajući se
+            će se projekat koristiti. Sans-serif fontovi eliminišu nepotrebne dekoracije, fokusirajući se
             isključivo na funkcionalnost. Hijerarhija se postiže kroz veličinu,
             debljinu i razmak između slova.
           </p>
@@ -749,28 +725,15 @@ function App() {
             </p>
           </div>
         </div>
-
-        <div className="typography-example-row reverse">
-          <div className="typography-example-text">
-            <p>
-              Dekorativni i script fontovi mogu biti privlačni, ali često
-              žrtvuju funkcionalnost i čitljivost. U profesionalnom okruženju se
-              ne preporučuju.
-            </p>
-          </div>
-          <div className="typography-example-image">
-            <img src="/comicsans.jpg" alt="Loš primer tipografije" />
-          </div>
-        </div>
       </div>
 
       {/* Prazan prostor primer */}
-      <div id="prazan-prostor" className="whitespace-section">
+      <div  className="whitespace-section">
         <h2 className="whitespace-title">
           3.3. Beli prostor kao dizajnerski element
         </h2>
         <div className="whitespace-image">
-          <img src="/beliProstor.png" alt="Beli prostor primer" />
+          <a href="https://www.apple.com/iphone-17-pro/" target="_blank" rel="noopener noreferrer"><img src="/beliProstor.png" alt="Beli prostor primer" /></a>
         </div>
         <p className="whitespace-text">
           Prazan prostor nije "prazan" - to je aktivni dizajnerski element koji
@@ -785,33 +748,30 @@ function App() {
       <AsymmetrySection />
 
       {/* Minimalizam primer */}
-      <div id="minimalizam" className="centered-text-section">
-        <p className="centered-paragraph">
-          3.6. Minimalizam - Jer su reči nekad suvišne.
-        </p>
-        <div className="minimalism-image">
-          <img src="/pivo.jpg" alt="Minimalizam" />
-        </div>
-      </div>
+      <section id="minimalizam">
+        <a href="https://github.com/m3Mza/swissPrinciplesWebDesign" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', outline: 'none' }}>
+          {'GIT.'.split('').map((letter, index) => (
+            <span
+              key={index}
+              className="letter"
+            >
+              {letter}
+            </span>
+          ))}
+        </a>
+      </section>
 
       {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
-          <div className="footer-info">
-            <p>Mirko Popović</p>
-          </div>
           <div className="footer-links">
-            <a
-              href="https://github.com/m3Mza"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub.
-            </a>
-            <Link to="/references">Reference.</Link>
+            <Link to="/references">
+              Reference.
+            </Link>
           </div>
         </div>
       </footer>
+      
     </div>
   );
 }

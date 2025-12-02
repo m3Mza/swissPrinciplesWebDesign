@@ -4,16 +4,10 @@
   - Footer
 	- Navigacioni meni
 	- Hero sekciju
-	- Responzivni dizajn
   - Reference.tsx stranica
   - Poster carousel
 */
 
-.app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
 /*
  * -----------------------------------------------------------------------------
@@ -135,105 +129,139 @@
  /* Header */
 
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  background-color: var(--primary-white);
-  border-bottom: 1px solid var(--primary-brown);
-  z-index: 100;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  z-index: 101; /* Above spotlight menu (z-index: 99) so button stays on top */
+  pointer-events: none;
 }
 
 .header-content {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2rem;
-  padding: 2rem 4rem;
-  align-items: center;
-}
-
-.logo {
-  grid-column: 1 / 4;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.logo a {
-  border-bottom: none;
-}
-
-.logo a:hover {
-  color: var(--accent-orange);
-}
-
-/* Navigacioni meni */
-
-.nav {
-  grid-column: 7 / 13;
+  padding: 0;
   display: flex;
-  justify-content: flex-end;
-  gap: 3rem;
-  flex-wrap: nowrap;
+  justify-content: flex-start;
+  pointer-events: auto;
 }
 
-.nav a {
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-transform: uppercase;
+.menu-toggle {
+  background: var(--accent-orange);
+  color: var(--primary-brown);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
-  border-bottom: none;
-  white-space: nowrap;
-}
-
-.nav a:hover {
-  color: var(--accent-orange);
-}
-
-.nav-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.nav-dropdown-toggle {
   cursor: pointer;
-}
-
-.nav-dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: var(--primary-brown);
-  min-width: 200px;
-  padding: 1rem 0;
-  margin-top: 0.5rem;
-  border: 2px solid var(--accent-orange);
-  z-index: 1000;
-  transform: scaleY(0);
-  transform-origin: top;
   transition: transform 0.3s ease;
+  text-transform: uppercase;
+  border-radius: 0;
+  position: relative; /* Ensures button stays above spotlight animation */
+  z-index: 102; /* Highest z-index to stay on top of everything */
+  outline: none; /* Removes focus outline border when clicked */
 }
 
-.nav-dropdown-menu::before {
-  content: '';
-  position: absolute;
-  top: -2rem;
+.menu-toggle:hover {
+  transform: scale(1.05);
+  background: var(--accent-orange); /* Keep orange background on hover */
+}
+
+.menu-toggle:focus {
+  outline: none; /* Removes focus outline border */
+  background: var(--accent-orange); /* Keep orange background on focus */
+}
+
+/* Spotlight Menu */
+
+.spotlight-menu {
+  position: fixed;
+  top: 0;
   left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 99;
+  pointer-events: none; /* Allows clicking through when closed */
+  overflow: hidden;
+}
+
+.spotlight-menu.active {
+  pointer-events: auto; /* Blocks clicks to content below when open */
+}
+
+.spotlight-background {
+  position: absolute;
+  top: 0;
   right: 0;
-  height: 2rem;
+  width: 100%;
+  height: 100%;
+  background: var(--accent-orange);
+  
+  /* CLOSED STATE: Small point hidden behind the bottom-right corner of MENI button
+   * Creates starting point at the button's bottom-right (approximately 4-10% from left, 5-7% from top)
+   * Format: polygon(x1 y1, x2 y2, x3 y3, x4 y4)
+   * - All points converge to same spot to create invisible starting point
+   * - Point location (9% 6%): Bottom-right corner of MENI button
+   *   Adjust 9% to move left/right based on button width
+   *   Adjust 6% to move up/down based on button height + padding
+   */
+  clip-path: polygon(-8% -5%, -8% -5%,-8% -5%, -8% -5%);
+  
+  /* ANIMATION: 0.8s duration with custom easing curve
+   * cubic-bezier(0.77, 0, 0.175, 1) creates a smooth, slightly elastic effect
+   * - Increase first value (0.77) to speed up the start
+   * - Decrease last value (1) to slow down the end
+   * - Change 0.8s to adjust overall speed (e.g., 0.5s faster, 1.2s slower)
+   */
+  transition: clip-path 0.9s cubic-bezier(0.6, 0, 0.175, 1);
 }
 
-.nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown-menu:hover {
-  transform: scaleY(1);
+.spotlight-menu.active .spotlight-background {
+  /* OPEN STATE: Diagonal spotlight expanding from button to right side of screen
+   * Creates a diagonal wedge shape connecting button to right menu area
+   * - First point (9% 6%): Starting point at button's bottom-right corner
+   *   Must match the closed state point for smooth animation origin
+   * - Second point (100% 15%): Top-right menu edge (cuts top to make thinner connection)
+   *   Increase 15% to cut more from top (e.g., 20% = thinner diagonal)
+   *   Decrease 15% to include more top area (e.g., 10% = wider diagonal)
+   * - Third point (100% 100%): Bottom-right corner of screen
+   * - Fourth point (60% 100%): Bottom-left edge of the menu area
+   *   Decrease 60% to make menu wider (e.g., 50% = menu takes 50% of width)
+   *   Increase 60% to make menu narrower (e.g., 70% = menu takes 30% of width)
+   */
+  clip-path: polygon(-8% -5%, 100% 25%, 100% 100%, 60% 100%);
 }
 
-.nav-dropdown-menu a {
-  display: block;
-  padding: 0.75rem 1.5rem;
-  color: var(--primary-white);
+.spotlight-nav {
+  position: absolute;
+  top: 62%;
+  right: 2%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.3s;
+}
+
+.spotlight-menu.active .spotlight-nav {
+  opacity: 1;
+}
+
+.spotlight-nav a {
+  color: var(--primary-brown);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 3.5rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: -0.02em;
   transition: all 0.3s ease;
-  border-bottom: 1px solid rgba(249, 171, 95, 0.2);
+  border-bottom: none;
+}
+
+.spotlight-nav a:hover {
+  transform: translateX(-10px);
 }
 
 .nav-dropdown-menu a:last-child {
@@ -254,6 +282,16 @@
  *
   *  CSS za deo stranice koji sluzi za poster carousel.
  */
+
+.grid-example-section .poster-carousel {
+  overflow: hidden;
+  padding: 6rem 0;
+  background-color: transparent;
+  position: relative;
+  transform: rotate(-2deg);
+  margin: 4rem -4rem;
+  z-index: 2;
+}
 
 .poster-carousel {
   overflow: hidden;
@@ -312,47 +350,29 @@
  */
  
 .footer {
-  background-color: var(--primary-brown);
-  color: var(--primary-white);
+  background-color: var(--accent-orange);
+  color: var(--primary-brown);
   padding: 3rem 4rem;
-  margin-top: auto;
+  margin-top: 0;
 }
 
 .footer-content {
-  max-width: 1400px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 2rem;
-}
-
-.footer-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.footer-name {
-  font-size: 1.5rem;
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  color: var(--primary-white);
-}
-
-.footer-date {
-  font-size: 1rem;
-  color: var(--neutral-gray);
 }
 
 .footer-links {
   display: flex;
   gap: 2rem;
-  align-items: center;
+  align-items: right;
 }
 
 .footer-links a {
-  color: var(--primary-white);
+  color: var(--primary-brown);
   font-size: 1rem;
   text-decoration: none;
   border-bottom: 1px solid transparent;
@@ -361,165 +381,8 @@
 }
 
 .footer-links a:hover {
-  color: var(--accent-orange);
-  border-bottom-color: var(--accent-orange);
-}
-
-/*
- * -----------------------------------------------------------------------------
- *  SEKCIJA : RESPOZIVNI DIZAJN
- * -----------------------------------------------------------------------------
- *
-  *  CSS za deo stranice koji sluzi za responzivnost.
- */
-
-@media (max-width: 1024px) {
-  .hero {
-    grid-template-columns: 1fr;
-  }
-  
-  .hero-content {
-    grid-column: 1 / -1;
-  }
-  
-  .hero-visual {
-    grid-column: 1 / -1;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .feature-card {
-    grid-column: span 6;
-  }
-  
-  .content-text,
-  .content-image {
-    grid-column: 1 / -1;
-  }
-  
-  .content-reverse .content-image,
-  .content-reverse .content-text {
-    grid-column: 1 / -1;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .header-content {
-    padding: 1.5rem 2rem;
-    gap: 1rem;
-  }
-  
-  .nav {
-    grid-column: 5 / 13;
-    gap: 1.5rem;
-  }
-  
-  .hero {
-    padding: 4rem 2rem;
-  }
-  
-  .hero-title {
-    font-size: 3rem;
-  }
-  
-  .features,
-  .content {
-    padding: 4rem 2rem;
-  }
-  
-  .feature-card {
-    grid-column: 1 / -1;
-  }
-  
-  .footer-section {
-    grid-column: span 6;
-  }
-  
-  .culture-section {
-    padding: 6rem 2rem;
-  }
-  
-  .result-section {
-    padding: 6rem 2rem;
-  }
-  
-  .result-title {
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-  }
-  
-  .result-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  .result-image,
-  .result-text {
-    grid-column: 1 / -1;
-  }
-  
-  .result-text {
-    font-size: 1.125rem;
-  }
-  
-  .culture-question {
-    font-size: 2.5rem;
-    margin-bottom: 4rem;
-  }
-  
-  .culture-images {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  .culture-image-left,
-  .culture-image-right {
-    grid-column: 1 / -1;
-    margin: 0;
-    aspect-ratio: 4/3;
-  }
-  
-  .comparison-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  .comparison-image:first-child,
-  .comparison-image:last-child {
-    grid-column: 1 / -1;
-    margin: 0;
-    aspect-ratio: 4/3;
-  }
-  
-  .footer-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2rem;
-  }
-  
-  .footer-links {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .grid-example-section {
-    padding: 6rem 2rem;
-  }
-
-  .grid-example-layout {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  .grid-example-visual .swiss-grid {
-    max-width: 350px;
-  }
-
-  .grid-example-visual .grid-letter {
-    font-size: 1.5rem;
-  }
+  color: var(--primary-brown);
+  border-bottom-color: var(--primary-brown);
 }
 
 /*
@@ -535,7 +398,7 @@
   grid-template-columns: repeat(12, 1fr);
   gap: 2rem;
   padding: 5.2rem 4rem;
-  min-height: 80vh;
+  min-height: 110vh;
   align-items: center;
 }
 
@@ -553,7 +416,7 @@
 
 .hero-subtitle {
   font-size: 1.25rem;
-  color: var(--neutral-gray);
+  color: var(--primary-brown);
   margin-bottom: 3rem;
   max-width: 500px;
   line-height: 1.6;
@@ -629,6 +492,212 @@
   margin: 0;
 }
 
+.dot {
+	--size: .5rem;
+	width: var(--size);
+	height: var(--size);
+	margin: calc((1rem - var(--size))/2);
+	border-radius: 50%;
+	background-color: var(--primary-white);
+	flex-grow: 0;
+}
+
+.line {
+	flex-grow: 1;
+	margin: 8px 0;
+	width: 3px;
+	background-color: var(--primary-white);
+}
+
+/* Timeline Section */
+.timeline-section {
+  padding: 8rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.timeline-decoration-image {
+  position: absolute;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.timeline-decoration-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Flip on hover effect */
+.flip-on-hover {
+  position: relative;
+  perspective: 1000px;
+}
+
+.flip-on-hover .flip-front,
+.flip-on-hover .flip-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease;
+}
+
+.flip-on-hover .flip-front {
+  position: relative;
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.flip-on-hover .flip-back {
+  transform: rotateY(180deg);
+}
+
+.flip-on-hover:hover .flip-front {
+  transform: rotateY(180deg);
+}
+
+.flip-on-hover:hover .flip-back {
+  transform: rotateY(360deg);
+}
+
+.timeline-img-1 {
+  top: 10%; 
+  left: 0%;
+  width: 200px;
+  height: 240px;
+  
+}
+
+.timeline-img-2 {
+  top: 25%;
+  right: 8%;
+  width: 180px;
+  height: 220px;
+  
+}
+
+.timeline-img-3 {
+  top: 50%;
+  left: 3%;
+  width: 160px;
+  height: 250px;
+  
+}
+
+.timeline-img-4 {
+  top: 70%;
+  right: 3%;
+  width: 240px;
+  height: 170px;
+
+}
+
+.timeline-img-5 {
+  bottom: 10%;
+  left: 8%;
+  width: 170px;
+  height: 220px;
+  
+}
+
+.timeline-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-item {
+  margin-bottom: 4rem;
+}
+
+.timeline-year {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.timeline-event {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 2rem;
+}
+
+.timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-orange);
+  border: 3px solid var(--primary-brown);
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-line {
+  width: 3px;
+  flex: 1;
+  background-color: var(--primary-brown);
+  margin-top: 8px;
+  min-height: 80px;
+}
+
+.timeline-item:last-child .timeline-line {
+  display: none;
+}
+
+.timeline-content h3 {
+  font-size: 1.5rem;
+  color: var(--primary-brown);
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.timeline-content p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--neutral-gray);
+  margin: 0;
+}
+
+.timeline-closing {
+  max-width: 800px;
+  margin: 4rem auto 0;
+  padding: 3rem;
+  background-color: var(--light-gray);
+  border-left: 4px solid var(--accent-orange);
+}
+
+.timeline-closing p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--neutral-gray);
+  margin: 0;
+}
+
+.timeline-title {
+	position: sticky;
+	top: 20px;
+}
+
+.timeline-content {
+	display: flex;
+	flex-direction: column;
+}
+
 
 /*
  * -----------------------------------------------------------------------------
@@ -639,8 +708,176 @@
  */
 
 .culture-section {
-  padding: 10rem 4rem;
-  background-color: var(--light-gray);
+  padding: 0;
+  background-color: var(--primary-white);
+}
+
+/* Question container */
+.culture-question-container {
+  min-height: 140vh; /* Vertikalni prostor odredjuje koliko treba listati do Kabukicho slike */
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 8rem 4rem 2rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.culture-question {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--primary-brown);
+  max-width: 50%;
+  line-height: 1.2;
+  position: sticky;
+  top: 30vh;
+}
+
+/* Kabukicho image section */
+.culture-kabukicho-section {
+  padding: 0 4rem 8rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: var(--primary-white);
+  margin-top: -50vh;
+}
+
+.culture-kabukicho-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3rem;
+  align-items: start;
+}
+
+.culture-kabukicho-image {
+  grid-column: 7 / 13;
+  grid-row: 1;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--primary-brown);
+}
+
+.culture-kabukicho-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.culture-kabukicho-text {
+  grid-column: 7 / 13;
+  grid-row: 2;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--neutral-gray);
+  margin-top: 1.5rem;
+}
+
+.culture-kabukicho-text p {
+  margin: 0;
+}
+
+/* Website comparison slider */
+.culture-comparison-section {
+  padding: 8rem 10%;
+  background-color: var(--primary-white);
+}
+
+.culture-comparison-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.culture-comparison-display {
+  width: 100%;
+  height: 450px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  border: 2px solid var(--primary-brown);
+}
+
+.comparison-side {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.comparison-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.comparison-slider-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--accent-orange);
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.comparison-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.comparison-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 400px;
+  height: 8px;
+  background: linear-gradient(to right, var(--primary-brown), var(--accent-orange));
+  outline: none;
+  border-radius: 4px;
+}
+
+.comparison-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: var(--accent-orange);
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid var(--primary-brown);
+  transition: transform 0.2s ease;
+}
+
+.comparison-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.comparison-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: var(--accent-orange);
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid var(--primary-brown);
+  transition: transform 0.2s ease;
+}
+
+.comparison-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+.comparison-description {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--neutral-gray);
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .culture-container {
@@ -664,14 +901,14 @@
 
 /* Poredjenje ulica leva slika */
 .culture-image-left {
-  grid-column: 1 / 6;
+  grid-column: 2 / 6;
   aspect-ratio: 3/4;
   margin-top: 3rem;
 }
 
 /* Poredjenje ulica desna slika */
 .culture-image-right {
-  grid-column: 7 / 13;
+  grid-column: 7 / 12;
   aspect-ratio: 4/3;
 }
 
@@ -706,63 +943,12 @@
 }
 
 .culture-description {
-  grid-column: 7 / 13;
+  grid-column: 7 / 12;
   margin-top: -14rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.8;
   color: var(--primary-brown);
   text-align: left;
-}
-
-/* Slika desno tekst levo */
-
-.result-content.reverse {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4rem;
-  align-items: center;
-}
-
-.result-content.reverse .result-text {
-  grid-column: 1 / 7;
-}
-
-.result-content.reverse .result-image {
-  grid-column: 7 / 13;
-  border: 2px solid var(--primary-brown);
-}
-
-.result-content.reverse .result-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-
-/* Slika levo tekst desno */
-
-.result-container {
-  padding: 12rem 2rem;
-  max-width: 1800px;
-  margin: 0 auto;
-}
-
-.result-content {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4rem;
-  align-items: center;
-}
-
-.result-image {
-  grid-column: 1 / 7;
-  border: 2px solid var(--primary-brown);
-}
-
-.result-image img {
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 
@@ -787,7 +973,6 @@
 
 .features {
   padding: 8rem 4rem;
-  background-color: var(--light-gray);
 }
 
 .features-grid {
@@ -828,7 +1013,7 @@
 }
 
 .feature-description {
-  color: var(--neutral-gray);
+  color: var(--primary-brown);
   line-height: 1.6;
 }
 
@@ -859,7 +1044,7 @@
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  color: var(--neutral-gray);
+  color: var(--primary-brown);
 }
 
 .content-image img {
@@ -1082,6 +1267,7 @@
 .grid-example-section {
   padding: 8rem 4rem;
   position: relative;
+  background-color: var(--primary-white);
 }
 
 .grid-lines-overlay {
@@ -1101,12 +1287,22 @@
   left: 4rem;
   right: 4rem;
   bottom: 8rem;
-  background-image: 
+  background-image:
     linear-gradient(90deg, rgba(180, 180, 180, 0.25) 1px, transparent 1px),
     linear-gradient(0deg, rgba(180, 180, 180, 0.25) 1px, transparent 1px);
-  background-size: calc(100% / 12) 100%, 100% calc(100% / 8);
+  background-size: calc(100% / 12) 100%, 100% calc(100% / 24);
   background-position: 0 0, 0 0;
+
+  mask:
+    linear-gradient(to right, transparent, #000 15%, #000 85%, transparent),
+    linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+  -webkit-mask:
+    linear-gradient(to right, transparent, #000 15%, #000 85%, transparent),
+    linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+  -webkit-mask-composite: intersect;
+          mask-composite: intersect;
 }
+
 
 .grid-example-title {
   text-align: center;
@@ -1119,7 +1315,7 @@
 
 .grid-example-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 2fr;
   gap: 4rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -1133,10 +1329,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 .grid-example-image img {
-  width: 70%;
+  width: 63%;
   height: auto;
   border: 2px solid var(--primary-brown);
   display: block;
@@ -1150,7 +1348,7 @@
 }
 
 .grid-example-author {
-  font-size: 1.25rem;
+  font-size: 1.55rem;
   color: var(--primary-brown);
   font-weight: 700;
   margin: 0;
@@ -1161,6 +1359,32 @@
   color: var(--neutral-gray);
   line-height: 1.8;
   margin: 0;
+}
+
+.whitespace-section-inline {
+  margin-top: 6rem;
+  position: relative;
+  z-index: 2;
+}
+
+.whitespace-section-inline .whitespace-image {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+}
+
+.whitespace-section-inline .whitespace-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.whitespace-section-inline .whitespace-text {
+  text-align: center;
+  font-size: 1.125rem;
+  color: var(--neutral-gray);
+  line-height: 1.8;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 
@@ -1174,142 +1398,81 @@
  */
 
 .contrast-demo-section {
-  padding: 8rem 10%;
+  padding: 12rem 10% 8rem 10%;
   background-color: var(--primary-white);
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+  z-index: 10;
+  overflow: hidden;
+  position: relative;
+}
+
+/* TWEAKABLE: Sliding black background that pushes from right */
+.contrast-sliding-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 1;
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+.contrast-background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  transition: background-color 0.1s linear;
+}
+
+.contrast-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-right: auto;
+  margin-left: 0;
 }
 
 .contrast-demo-title {
   font-size: 3rem;
-  color: var(--primary-brown);
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.contrast-demo-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.contrast-demo-display {
-  width: 100%;
-  height: 400px;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 3rem;
-}
-
-.contrast-side {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-}
-
-.contrast-side.bad-contrast {
-  background-color: #D4C157;
-  color: #f5f2a6;
-}
-
-.contrast-side.good-contrast {
-  background-color: #000000;
-  color: #FFFFFF;
-}
-
-.contrast-demo-text {
-  font-size: 6rem;
-  font-weight: 700;
+  color: var(--primary-white);
   margin: 0;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  text-align: left;
 }
 
-.contrast-slider-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background-color: var(--accent-orange);
-  pointer-events: none;
-  z-index: 10;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.contrast-slider-container {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  justify-content: center;
-}
-
-.slider-label {
-  font-size: 0.9rem;
-  color: var(--neutral-gray);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 500;
-  min-width: 120px;
-  text-align: center;
-}
-
-.contrast-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 400px;
-  height: 8px;
-  background: linear-gradient(to right, #D4C157, #000000);
-  outline: none;
-  border-radius: 4px;
-}
-
-.contrast-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  background: var(--accent-orange);
-  cursor: pointer;
-  border-radius: 50%;
-  border: 2px solid var(--primary-brown);
-  transition: transform 0.2s ease;
-}
-
-.contrast-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-}
-
-.contrast-slider::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
-  background: var(--accent-orange);
-  cursor: pointer;
-  border-radius: 50%;
-  border: 2px solid var(--primary-brown);
-  transition: transform 0.2s ease;
-}
-
-.contrast-slider::-moz-range-thumb:hover {
-  transform: scale(1.2);
+.contrast-text {
+  font-size: 1.5rem;
+  line-height: 2;
+  color: var(--primary-white);
+  margin: 0;
+  text-align: left;
 }
 
 .contrast-description {
   text-align: center;
   font-size: 1.1rem;
   line-height: 1.8;
-  color: var(--neutral-gray);
+  color: var(--primary-white);
   max-width: 800px;
   margin: 0 auto;
 }
 
-.result-text {
-  grid-column: 8 / 13;
-  font-size: 1.5rem;
-  line-height: 1.8;
-  color: var(--primary-brown);
-}
+
 
 /*
  * -----------------------------------------------------------------------------
@@ -1320,7 +1483,6 @@
  */
 .whitespace-section {
   padding: 8rem 10%;
-  background-color: var(--primary-white);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1389,11 +1551,7 @@
 
 .asymmetry-item {
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.asymmetry-item img {
-  transition: border-radius 0.2s ease-out;
+  transition: opacity 0.3s ease;
 }
 
 .asymmetry-item img {
@@ -1403,6 +1561,8 @@
   border: 2px solid var(--primary-brown);
   display: block;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  user-select: none;
 }
 
 .asymmetry-item p {
@@ -1414,6 +1574,7 @@
 }
 
 /* Pozicije postera asimetricne za ovu stranicu, tj. nasumicne */
+/* TWEAKABLE: Each card has unique delay for asynchronous fish-like movement */
 .poster-1 {
   grid-column: 2 / 4;
   grid-row: 1 / 3;
@@ -1427,20 +1588,20 @@
   align-items: center;
   padding: 1.5rem;
   background-color: var(--light-gray);
-  animation-delay: 0.5s;
+  animation-delay: 2.3s;
   font-size: 1rem;
 }
 
 .poster-2 {
   grid-column: 6 / 8;
   grid-row: 2 / 4;
-  animation-delay: 1s;
+  animation-delay: 5.7s;
 }
 
 .poster-3 {
   grid-column: 9 / 11;
   grid-row: 1 / 2;
-  animation-delay: 1.5s;
+  animation-delay: 9.1s;
 }
 
 .text-2 {
@@ -1449,20 +1610,20 @@
   display: flex;
   align-items: center;
   padding: 1.5rem;
-  animation-delay: 2s;
+  animation-delay: 7.4s;
   font-size: 1rem;
 }
 
 .poster-4 {
   grid-column: 3 / 5;
   grid-row: 3 / 5;
-  animation-delay: 2.5s;
+  animation-delay: 11.2s;
 }
 
 .poster-5 {
   grid-column: 11 / 13;
   grid-row: 2 / 5;
-  animation-delay: 3s;
+  animation-delay: 3.8s;
 }
 
 .text-3 {
@@ -1473,7 +1634,7 @@
   padding: 1.5rem;
   background-color: var(--accent-orange);
   color: var(--primary-white);
-  animation-delay: 3.5s;
+  animation-delay: 12.9s;
   font-size: 1rem;
 }
 
@@ -1484,25 +1645,25 @@
 .poster-6 {
   grid-column: 1 / 3;
   grid-row: 4 / 6;
-  animation-delay: 4s;
+  animation-delay: 6.5s;
 }
 
 .poster-7 {
   grid-column: 4 / 6;
   grid-row: 5 / 7;
-  animation-delay: 4.5s;
+  animation-delay: 1.8s;
 }
 
 .poster-8 {
   grid-column: 6 / 8;
   grid-row: 4 / 5;
-  animation-delay: 5s;
+  animation-delay: 8.6s;
 }
 
 .poster-9 {
   grid-column: 9 / 11;
   grid-row: 5 / 8;
-  animation-delay: 5.5s;
+  animation-delay: 4.2s;
 }
 
 @keyframes float {
@@ -1522,14 +1683,43 @@
   *  CSS za deo stranice koji sluzi za minimalizam segment.
  */
 
-.minimalism-image {
-  max-width: 480px;
-  margin: 3rem auto 0;
-  border: 2px solid var(--primary-brown);
+#minimalizam {
+  text-align: left;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  direction: ltr;
+  flex-direction: row;
+  padding-bottom: 0;
+  margin-bottom: -5.6rem;
+  color: var(--primary-brown);
 }
 
-.minimalism-image img {
-  width: 100%;
-  height: auto;
-  display: block;
+#minimalizam a {
+  text-decoration: none !important;
+  color: inherit;
 }
+
+.letter {
+  display: inline-block;
+  transition: transform 0.4s ease;
+  font-size: 20.5vw;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none !important;
+}
+
+.letter:hover {
+  transform: translateY(-20px);
+}
+
+.letter:hover ~ .letter {
+  transform: translateY(-10px);
+}
+
+.letter:hover ~ .letter ~ .letter {
+  transform: translateY(0);
+}
+
+
+
